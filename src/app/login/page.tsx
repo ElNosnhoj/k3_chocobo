@@ -1,5 +1,5 @@
 import { EggFried } from "lucide-react"
-import { LoginForm } from '@/components/login-form'
+import { LoginForm } from './login-form'
 
 import { redirect } from "next/navigation";
 import { getSessionData, SessionData } from "@/lib/session";
