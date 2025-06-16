@@ -1,5 +1,5 @@
-import { getSessionData } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { getSessionData } from "@/lib/session";
 
 // export default function Home() {
 //     return (
@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 // }
 
 
-export default async ()=>{
+export default async () => {
     const session = await getSessionData()
     if (!session.isLoggedIn) return redirect('/login')
     return redirect('/home')
