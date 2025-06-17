@@ -4,7 +4,7 @@
  *=====================================================================*/
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { redirect } from "next/navigation";
-import { getSessionData } from "@/lib/session";
+import { getSessionData } from "@/lib/session/session";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getSessionData } from "@/lib/session";
+import { getSessionData } from "@/lib/session/session";
 
 // export default function Home() {
 //     return (

@@ -3,7 +3,7 @@
  * desc: logout!
  *=====================================================================*/
 import { NextRequest } from "next/server"
-import { getSessionData } from "@/lib/session";
+import { getSessionData } from "@/lib/session/session";
 import { db } from "@/lib/drizzle/db";
 import { users } from "@/lib/drizzle/schema";
 import { eq } from "drizzle-orm";

@@ -3,7 +3,7 @@
  * desc: logout!
  *=====================================================================*/
 import { NextRequest } from "next/server"
-import { getSessionData } from "@/lib/session";
+import { getSessionData } from "@/lib/session/session";
 import { redirect } from "next/navigation";
 
 export const POST = async (req: NextRequest) => {
