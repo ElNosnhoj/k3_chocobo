@@ -3,7 +3,8 @@
  * desc: retrieve session data
  *=====================================================================*/
 import { NextRequest } from "next/server"
-import { getSessionData, defaultSessionData } from "@/lib/session/session";
+import { getSessionData } from "@/lib/session/session";
+import { defaultSessionData } from "@/lib/session/data-interface";
 
 // retrieve session data
 export const GET = async (req: NextRequest)=>{

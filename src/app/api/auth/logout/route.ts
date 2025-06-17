@@ -7,6 +7,7 @@ import { getSessionData } from "@/lib/session/session";
 import { redirect } from "next/navigation";
 
 export const POST = async (req: NextRequest) => {
+    console.log("logger outerrooo")
     const session = await getSessionData()
     
     session.destroy()

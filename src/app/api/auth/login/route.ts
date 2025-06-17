@@ -25,9 +25,19 @@ const getUserData = async (username: string) => {
 
 // attempt login
 export const POST = async (req: NextRequest) => {
-    // get username from form
-    const formData = await req.formData()
-    const username = formData.get('username') as string
+    // get username
+    // const formData = await req.formData()
+    // const username = formData.get('username') as string
+    // if (!username) return new Response("Username not specified", { status: 400 })
+
+    // get username. try from body and form
+    let username;
+    try {
+        username = await req.json()
+    }
+    catch {
+        username = (await req.formData()).get('username') as string
+    }
     if (!username) return new Response("Username not specified", { status: 400 })
 
     // check database for validitiy
