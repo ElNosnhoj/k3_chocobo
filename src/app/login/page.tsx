@@ -2,15 +2,7 @@ import { EggFried } from "lucide-react"
 import { LoginForm } from './login-form'
 
 import { redirect } from "next/navigation";
-import { getSessionData, SessionData } from "@/lib/session/session";
-
-// export default async ()=>{
-//     const session = await getSessionData()
-//     if (session.isLoggedIn) return redirect('/home')
-//     return (
-//         <main>login page</main>
-//     )
-// }
+import { getSessionData } from "@/lib/session/session";
 
 
 export default async () => {

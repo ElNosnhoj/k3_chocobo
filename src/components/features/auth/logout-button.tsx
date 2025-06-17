@@ -1,5 +1,3 @@
-"use client"
-import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import {
     AlertDialog,
@@ -12,7 +10,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-
 
 const LogOutIcon = ({ ...props }) => {
     return (
@@ -34,15 +31,8 @@ const LogOutIcon = ({ ...props }) => {
         </svg>
     )
 }
-export default () => {
-    const handleLogout = async () => {
-        const response = await fetch("/api/auth/logout", {
-            method: "POST",
-        })
 
-        if (response.ok) return redirect("/login")
-        else console.error("Logout failed")
-    }
+export default () => {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -58,10 +48,14 @@ export default () => {
                         This action will log you out of your account and clear any current session tracking.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleLogout}>Logout</AlertDialogAction>
-                </AlertDialogFooter>
+                <form action="/api/auth/logout" method="POST">
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction type="submit">
+                            Logout
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </form>
             </AlertDialogContent>
         </AlertDialog>
     )
