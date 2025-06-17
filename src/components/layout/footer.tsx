@@ -5,7 +5,7 @@
 
 const Footer = async ({name}:{name?: string}) => {
     return (
-        <footer className="bg-gray-200 text-center p-4 text-gray-600 text-sm">
+        <footer className="bg-gray-200 text-center p-4 text-gray-600 text-sm mt-auto">
             {name&&<p>Logged in as: {name}</p>}
             <p>&copy; 2023 Chocobo App. All rights reserved.</p>
         </footer>

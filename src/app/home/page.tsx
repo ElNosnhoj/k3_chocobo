@@ -2,11 +2,13 @@
  * file: home/page.tsx
  * desc: dashboard user sees on login
  *=====================================================================*/
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { redirect } from "next/navigation";
 import { getSessionData } from "@/lib/session/session";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { Activity } from "lucide-react";
+import DashboardNavCard from "@/components/ui/dashboard-nav-card";
+
 
 export default async () => {
     const session = await getSessionData()
@@ -16,23 +18,20 @@ export default async () => {
         <div className="flex flex-col min-h-screen bg-gray-100">
             <Header />
             <main className="flex-1 p-6 mx-auto w-full max-w-screen-md">
-                <Card className="mb-6">
-                    <CardHeader>
-                        <CardTitle>Template</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p>This is some dummy button to nav to different pages. All hail chocogods.</p>
-                    </CardContent>
-                </Card>
-
-                <Card className="mb-6">
-                    <CardHeader>
-                        <CardTitle>Session Tracker</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p>Start a session tracker! Keep track of fabricated parts, defects, issues. </p>
-                    </CardContent>
-                </Card>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <DashboardNavCard
+                        title="Template"
+                        Icon={Activity}
+                        desc="This is some dummy button to nav to different pages. All hail chocogods."
+                        href="#"
+                    />
+                    <DashboardNavCard
+                        title="Session Tracker"
+                        Icon={Activity} // Replace with appropriate icon if needed
+                        desc="Track data for your machines, including fabricated parts, defects, and issues."
+                        href="/tracker"
+                    />
+                </div>
             </main>
 
             <Footer name={session.username}/>
