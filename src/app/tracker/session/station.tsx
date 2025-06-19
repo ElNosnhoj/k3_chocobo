@@ -15,6 +15,19 @@ import { Textarea } from "@/components/ui/textarea";
 import StationSelector from "./station-selector";
 import CheckCard from "./check-card";
 import NumberFlow from '@number-flow/react'
+import NumberField from "./number-field";
+
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 
 const TestingView = ({ data }: { data: StationData | undefined }) => {
     if (!data) return <></>
@@ -34,28 +47,17 @@ const TestingView = ({ data }: { data: StationData | undefined }) => {
 
 const FabricatedQty = ({ qty, onQtyChange }: { qty: number, onQtyChange: (val: number) => void }) => {
     return (
-        <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
+        <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0 pb-4">
             <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
                 <CardTitle>Fabricated QTY</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col items-center justify-center pb-4">
-                <NumberFlow value={qty} className="text-6xl font-bold pointer-events-none " aria-hidden="true"/>
-                <div className="flex gap-4">
-                    <Button
-                        onClick={() => (qty > 0 && onQtyChange(qty - 1))}
-                        className="px-6 py-3 text-lg"
-                        variant={"secondary"}
-                    >
-                        -
-                    </Button>
-                    <Button
-                        onClick={() => onQtyChange(qty + 1)}
-                        className="px-6 py-3 text-lg"
-                        variant={"outline"}
-                    >
-                        +
-                    </Button>
-                </div>
+            <CardContent className=" flex items-center justify-center">
+                <NumberField
+                    value={qty}
+                    onValueChange={onQtyChange}
+                    title="Edit Fabricated Quantity"
+                    description="Enter the new fabricated quantity below."
+                />
             </CardContent>
         </Card>
     )
@@ -112,18 +114,41 @@ const Station = () => {
                         display start date, start time, and running time in minutes here
                     </Card>
 
+                    {/* FABRICATED QTY */}
                     <FabricatedQty
                         qty={data.fabricatedQty}
                         onQtyChange={v => setData(old => ({ ...old, fabricatedQty: v }))}
                     />
 
+                    {/* CHANGE OVER */}
                     <CheckCard
                         title={"Change Over"}
                         state={data.changeOver}
                         onCheckedChange={(b) => setData(old => ({ ...old, changeOver: b }))}
                     >
-                        <div className="p-4">
-                            Two number fields here. <br />"Change Over" and "Line Clear"
+                        <div className="flex items-center justify-center pb-4 gap-2 px-4">
+                            <Card className="p-0 gap-0 mt-4 items-center pb-2 w-full max-w-48">
+                                <div className="text-center text-xl border-b-1 w-full">
+                                    Change Over
+                                </div>
+                                <NumberField
+                                    value={data.changeOverQty}
+                                    onValueChange={(v) => setData(old=>({...old,changeOverQty:v}))}
+                                    title="Change Over Quantity"
+                                    description="Enter the new change over quantity below."
+                                />
+                            </Card>
+                            <Card className="p-0 gap-0 mt-4 items-center pb-2 w-full max-w-48">
+                                <div className="text-center text-xl border-b-1 w-full">
+                                    Line Change
+                                </div>
+                                <NumberField
+                                    value={data.lineChangeQty}
+                                    onValueChange={(v) => setData(old=>({...old,lineChangeQty:v}))}
+                                    title="Change Over Quantity"
+                                    description="Enter the new change over quantity below."
+                                />
+                            </Card>
                         </div>
                     </CheckCard>
 
@@ -156,9 +181,6 @@ const Station = () => {
                     </CheckCard>
 
 
-
-
-                    
                     <Button onClick={test}>ignore</Button>
                     <TestingView data={data} />
                     <TestingView data={session?.stationData} />
