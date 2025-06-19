@@ -44,7 +44,7 @@ const NumberDialog = ({ value, onValueChange, title, description }: NumberFieldP
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <div className="text-6xl font-bold cursor-pointer text-center">
-                    <NumberFlow value={value} className="pointer-events-none" aria-hidden="true" format={{ useGrouping: false }} />
+                    <NumberFlow value={value} className="pointer-events-none min-w-[4ch]" aria-hidden="true" format={{ useGrouping: false }} />
                 </div>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] -translate-y-50">
@@ -58,7 +58,6 @@ const NumberDialog = ({ value, onValueChange, title, description }: NumberFieldP
                         value={dialogValue}
                         onChange={(e) => setDialogValue(Number(e.target.value))}
                         className="text-center !text-4xl leading-loose p-8 [&::-webkit-inner-spin-button]:appearance-none"
-
                     />
                 </div>
                 <DialogFooter>

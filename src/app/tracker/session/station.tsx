@@ -14,7 +14,7 @@ import React, { useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import StationSelector from "./station-selector";
 import CheckCard from "./check-card";
-import NumberField from "./number-field";
+import NumberField, { NumberFieldAlt } from "./number-field";
 import NumberDialog from "./number-dialog";
 import AlertWrapper from "@/components/ui/alert-wrapper/server";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
@@ -97,27 +97,38 @@ const Station = () => {
                         <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
                             <CardTitle>Session Info</CardTitle>
                         </CardHeader>
-                        <CardContent className="p-2 flex items-center justify-center gap-3">
-                            <MetricCard
-                                Icon={Calendar}
-                                metric={data.datetimeStart ? new Date(data.datetimeStart).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' }) : "N/A"}
-                                label={"date"}
-                            />
-                            <MetricCard 
-                                Icon={Timer}
-                                metric={<RunTimer startTime={data.datetimeStart} />}
-                                label={"runtime"}
-                            />
-                            <MetricCard
-                                Icon={Clock}
-                                metric={data.datetimeStart ? new Date(data.datetimeStart).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : "N/A"}
-                                label={"time"}
-                            />
+                        <CardContent className="p-2">
+                            <div className="flex items-center justify-center gap-3">
+                                <MetricCard
+                                    Icon={Calendar}
+                                    metric={data.datetimeStart ? new Date(data.datetimeStart).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' }) : "N/A"}
+                                    label={"date"}
+                                />
+                                <MetricCard
+                                    Icon={Timer}
+                                    metric={<RunTimer startTime={data.datetimeStart} />}
+                                    label={"runtime"}
+                                />
+                                <MetricCard
+                                    Icon={Clock}
+                                    metric={data.datetimeStart ? new Date(data.datetimeStart).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : "N/A"}
+                                    label={"time"}
+                                />
+                            </div>
+                            <div className="flex flex-col items-center justify-center mb-2">
+                                <NumberFieldAlt
+                                    value={data.fabricatedQty}
+                                    onValueChange={v => setData(old => ({ ...old, fabricatedQty: v }))}
+                                    title="Edit Fabricated Quantity"
+                                    description="Enter the new fabricated quantity below."
+                                />
+                                <h1 className="text-xl -mt-4">fabricated</h1>
+                            </div>
                         </CardContent>
                     </Card>
 
                     {/* FABRICATED QTY */}
-                    <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0 pb-4">
+                    <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0 pb-4 hidden">
                         <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
                             <CardTitle>Fabricated QTY</CardTitle>
                         </CardHeader>
