@@ -14,11 +14,10 @@ import React, { useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import StationSelector from "./station-selector";
 import CheckCard from "./check-card";
-import NumberFlow from '@number-flow/react'
 import NumberField from "./number-field";
 import NumberDialog from "./number-dialog";
-
-
+import AlertWrapper from "@/components/ui/alert-wrapper/server";
+import ChocoboLoading from "@/components/ui/chocobo-loading";
 
 const TestingView = ({ data }: { data: StationData | undefined }) => {
     if (!data) return <></>
@@ -32,25 +31,6 @@ const TestingView = ({ data }: { data: StationData | undefined }) => {
                 ))
             }
         </div>
-    )
-}
-
-
-const FabricatedQty = ({ qty, onQtyChange }: { qty: number, onQtyChange: (val: number) => void }) => {
-    return (
-        <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0 pb-4">
-            <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
-                <CardTitle>Fabricated QTY</CardTitle>
-            </CardHeader>
-            <CardContent className=" flex items-center justify-center">
-                <NumberField
-                    value={qty}
-                    onValueChange={onQtyChange}
-                    title="Edit Fabricated Quantity"
-                    description="Enter the new fabricated quantity below."
-                />
-            </CardContent>
-        </Card>
     )
 }
 
@@ -90,11 +70,7 @@ const Station = () => {
         setData(old => ({ ...old, stationName: "" }))
     }
 
-    return (isLoading) ? (
-        <div className="flex items-center p-6 mx-auto">
-            <p className="text-lg">Loading...</p>
-        </div>
-    ) : (
+    return (isLoading) ? <ChocoboLoading /> : (
         <div className="flex flex-col w-full gap-4 overflow-hidden">
             <StationSelector station={data.stationName} onStationChange={s => setData(old => ({ ...old, stationName: s }))} />
 
@@ -107,10 +83,19 @@ const Station = () => {
                     </Card>
 
                     {/* FABRICATED QTY */}
-                    <FabricatedQty
-                        qty={data.fabricatedQty}
-                        onQtyChange={v => setData(old => ({ ...old, fabricatedQty: v }))}
-                    />
+                    <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0 pb-4">
+                        <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
+                            <CardTitle>Fabricated QTY</CardTitle>
+                        </CardHeader>
+                        <CardContent className=" flex items-center justify-center">
+                            <NumberField
+                                value={data.fabricatedQty}
+                                onValueChange={v => setData(old => ({ ...old, fabricatedQty: v }))}
+                                title="Edit Fabricated Quantity"
+                                description="Enter the new fabricated quantity below."
+                            />
+                        </CardContent>
+                    </Card>
 
                     {/* CHANGE OVER */}
                     <CheckCard
@@ -144,6 +129,7 @@ const Station = () => {
                         </div>
                     </CheckCard>
 
+                    {/* Issues | Stops */}
                     <CheckCard
                         title={"Stops"}
                         state={data.issue}
@@ -161,11 +147,12 @@ const Station = () => {
                                 className="mt-6 min-h-[6rem] max-h-[6rem]"
                                 placeholder="notes..."
                                 value={data.issueNote}
-                                onChange={e=>setData(old=>({...old, issueNote:e.target.value}))}
+                                onChange={e => setData(old => ({ ...old, issueNote: e.target.value }))}
                             />
                         </div>
                     </CheckCard>
 
+                    {/* Defects */}
                     <CheckCard
                         title={"Defects"}
                         state={data.defect}
@@ -183,15 +170,27 @@ const Station = () => {
                                 className="mt-6 min-h-[6rem] max-h-[6rem]"
                                 placeholder="notes..."
                                 value={data.defectNote}
-                                onChange={e=>setData(old=>({...old, defectNote:e.target.value}))}
+                                onChange={e => setData(old => ({ ...old, defectNote: e.target.value }))}
                             />
                         </div>
                     </CheckCard>
 
+                    {/* <Button>End Session</Button> */}
+                    <AlertWrapper
+                        trigger={<Button className="mt-2">End Session</Button> }
+                        title="End Session?"
+                        description="Your current session will be logged."
+                        action="#" 
+                        method="POST"
+                    />
 
-                    <Button onClick={test}>ignore</Button>
-                    <TestingView data={data} />
-                    <TestingView data={session?.stationData} />
+                    {/* testing stuff */}
+                    <div className="flex flex-col w-full gap-4 hidden">
+                        <Button onClick={test}>ignore</Button>
+                        <TestingView data={data} />
+                        <TestingView data={session?.stationData} />
+                    </div>
+
                 </div>
             </div>
         </div>

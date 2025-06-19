@@ -15,13 +15,14 @@ import React from "react"
 import useSession from "@/lib/session/use-session"
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import ChocoboLoading from "@/components/ui/chocobo-loading";
 
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
-    const { login } = useSession()
+    const { login, isLoggingIn } = useSession()
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,8 +35,8 @@ export function LoginForm({
     }
 
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <Card>
+        <div className={cn("flex flex-col gap-6 relative", className)} {...props}>
+            <Card className="">
                 <CardHeader className="text-center">
                     <CardTitle className="text-xl">Welcome back</CardTitle>
                     <CardDescription>
@@ -68,6 +69,18 @@ export function LoginForm({
                     </form>
                 </CardContent>
             </Card>
+
+            {isLoggingIn &&
+                <>
+                    <Card className="z-1 absolute inset-0 w-full h-full bg-white/80">
+                    </Card>
+                    <Card className="z-1 absolute inset-0 w-full h-full bg-transparent flex items-center justify-center">
+                        <ChocoboLoading className="w-30" />
+                    </Card>
+                </>
+
+            }
+
         </div>
     )
 }
