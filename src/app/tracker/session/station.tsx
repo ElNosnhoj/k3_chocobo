@@ -16,18 +16,9 @@ import StationSelector from "./station-selector";
 import CheckCard from "./check-card";
 import NumberFlow from '@number-flow/react'
 import NumberField from "./number-field";
+import NumberDialog from "./number-dialog";
 
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
+
 
 const TestingView = ({ data }: { data: StationData | undefined }) => {
     if (!data) return <></>
@@ -107,9 +98,10 @@ const Station = () => {
         <div className="flex flex-col w-full gap-4 overflow-hidden">
             <StationSelector station={data.stationName} onStationChange={s => setData(old => ({ ...old, stationName: s }))} />
 
-            {/* <div className={`flex flex-col w-full gap-4 overflow-hidden transition-all duration-300 ease-in-out ${data?.stationName ? "opacity-100 " : "opacity-0"}`}> */}
             <div className={`overflow-hidden w-full `}>
-                <div className={`flex flex-col gap-4 w-full transition-all duration-700 ease-in-out ${data?.stationName ? "" : "-translate-y-full"}`}>
+                <div className={`flex flex-col gap-3 w-full transition-all duration-700 ease-in-out ${data?.stationName ? "" : "-translate-y-full"}`}>
+
+                    {/* Dispaly start date, start time, and run time */}
                     <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
                         display start date, start time, and running time in minutes here
                     </Card>
@@ -133,7 +125,7 @@ const Station = () => {
                                 </div>
                                 <NumberField
                                     value={data.changeOverQty}
-                                    onValueChange={(v) => setData(old=>({...old,changeOverQty:v}))}
+                                    onValueChange={(v) => setData(old => ({ ...old, changeOverQty: v }))}
                                     title="Change Over Quantity"
                                     description="Enter the new change over quantity below."
                                 />
@@ -144,9 +136,9 @@ const Station = () => {
                                 </div>
                                 <NumberField
                                     value={data.lineChangeQty}
-                                    onValueChange={(v) => setData(old=>({...old,lineChangeQty:v}))}
+                                    onValueChange={(v) => setData(old => ({ ...old, lineChangeQty: v }))}
                                     title="Line Change Quantity"
-                                    description="Enter the line change quantity below."
+                                    description="Enter the new line change quantity below."
                                 />
                             </Card>
                         </div>
@@ -157,12 +149,20 @@ const Station = () => {
                         state={data.issue}
                         onCheckedChange={(b) => setData(old => ({ ...old, issue: b }))}
                     >
-                        <div className="w-full flex flex-col p-4">
-                            <div className="text-6xl font-bold text-center">
-                                30
-                            </div>
-                            <div className="text-center">minutes</div>
-                            <Textarea className="mt-6 min-h-[6rem] max-h-[6rem]" placeholder="notes..." />
+                        <div className="w-full flex flex-col p-4 pt-0">
+                            <NumberDialog
+                                value={data.issueDuration}
+                                onValueChange={(v) => setData(old => ({ ...old, issueDuration: v }))}
+                                title="Stop Duration"
+                                description="Enter stop duration in minutes below."
+                            />
+                            <div className="text-center -mt-4">minutes</div>
+                            <Textarea
+                                className="mt-6 min-h-[6rem] max-h-[6rem]"
+                                placeholder="notes..."
+                                value={data.issueNote}
+                                onChange={e=>setData(old=>({...old, issueNote:e.target.value}))}
+                            />
                         </div>
                     </CheckCard>
 
@@ -171,12 +171,20 @@ const Station = () => {
                         state={data.defect}
                         onCheckedChange={(b) => setData(old => ({ ...old, defect: b }))}
                     >
-                        <div className="w-full flex flex-col p-4">
-                            <div className="text-6xl font-bold text-center">
-                                30
-                            </div>
-                            <div className="text-center">amount</div>
-                            <Textarea className="mt-6 min-h-[6rem] max-h-[6rem]" placeholder="notes..." />
+                        <div className="w-full flex flex-col p-4 pt-0">
+                            <NumberDialog
+                                value={data.defectQTY}
+                                onValueChange={(v) => setData(old => ({ ...old, defectQTY: v }))}
+                                title="Stop Duration"
+                                description="Enter stop duration in minutes below."
+                            />
+                            <div className="text-center -mt-4">amount</div>
+                            <Textarea
+                                className="mt-6 min-h-[6rem] max-h-[6rem]"
+                                placeholder="notes..."
+                                value={data.defectNote}
+                                onChange={e=>setData(old=>({...old, defectNote:e.target.value}))}
+                            />
                         </div>
                     </CheckCard>
 

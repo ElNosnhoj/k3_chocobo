@@ -23,22 +23,22 @@ interface NumberFieldProps {
 }
 
 const NumberDialog = ({ value, onValueChange, title, description }: NumberFieldProps) => {
-    const [open, setOpen] = React.useState(false);
-    const [dialogValue, setDialogValue] = React.useState(value);
+    const [open, setOpen] = React.useState(false)
+    const [dialogValue, setDialogValue] = React.useState(value)
 
     React.useEffect(() => {
-        setDialogValue(value);
-    }, [value, open]);
+        setDialogValue(value)
+    }, [value, open])
 
     const handleSave = () => {
         onValueChange(dialogValue);
         setOpen(false);
-    };
+    }
 
     const handleCancel = () => {
         setDialogValue(value);
         setOpen(false);
-    };
+    }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

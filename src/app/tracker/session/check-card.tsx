@@ -7,12 +7,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 const CheckCard = ({ title = "checkbox", state = false, onCheckedChange = (b: boolean) => { }, children = <></> }) => (
     <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
-        <CardHeader className="flex p-4 text-2xl">
-            <div className="flex items-center space-x-2">
+        <CardHeader className="flex p-4 text-2xl w-full">
+            <div className="flex items-center space-x-2 w-full">
                 <Checkbox id={title} className="size-6" checked={state} onCheckedChange={onCheckedChange} />
                 <label
                     htmlFor={title}
-                    className=" text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className=" text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 w-full"
                 >
                     {title}
                 </label>
