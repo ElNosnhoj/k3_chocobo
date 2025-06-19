@@ -12,7 +12,6 @@ import DashboardNavCard from "@/components/ui/dashboard-nav-card";
 
 export default async () => {
     const session = await getSessionData()
-    console.log(session)
     if (!session.isLoggedIn) return redirect('/login')
 
     return (
