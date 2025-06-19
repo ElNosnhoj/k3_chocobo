@@ -145,8 +145,8 @@ const Station = () => {
                                 <NumberField
                                     value={data.lineChangeQty}
                                     onValueChange={(v) => setData(old=>({...old,lineChangeQty:v}))}
-                                    title="Change Over Quantity"
-                                    description="Enter the new change over quantity below."
+                                    title="Line Change Quantity"
+                                    description="Enter the line change quantity below."
                                 />
                             </Card>
                         </div>
