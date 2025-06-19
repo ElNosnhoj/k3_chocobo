@@ -6,7 +6,7 @@
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { defaultStationData, StationData, SessionData } from "@/lib/session/data-interface";
 
-import { Calendar, Clock, Timer } from "lucide-react";
+import { Calendar, Clock, Timer, ThumbsDown, OctagonMinus, Brush, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import useSession from "@/lib/session/use-session";
@@ -18,6 +18,7 @@ import NumberField from "./number-field";
 import NumberDialog from "./number-dialog";
 import AlertWrapper from "@/components/ui/alert-wrapper/server";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
+import RunTimer from "@/components/ui/run-timer";
 
 const TestingView = ({ data }: { data: StationData | undefined }) => {
     if (!data) return <></>
@@ -33,6 +34,20 @@ const TestingView = ({ data }: { data: StationData | undefined }) => {
         </div>
     )
 }
+
+const MetricCard = ({ Icon, metric, label }: { Icon: React.ElementType, metric: any, label?: string }) => {
+    return (
+        <Card className="w-fit h-fit shadow-sm gap-0 m-0 p-0">
+            <CardContent className="p-2 flex flex-col items-center justify-center">
+                <Icon className="w-6 h-6 text-muted-foreground " />
+                <div className="text-2xl -mb-2">{metric}</div>
+                <p className="text-lg text-muted-foreground ">{label}</p>
+            </CardContent>
+        </Card>
+    )
+}
+
+
 
 
 const Station = () => {
@@ -77,9 +92,28 @@ const Station = () => {
             <div className={`overflow-hidden w-full `}>
                 <div className={`flex flex-col gap-3 w-full transition-all duration-700 ease-in-out ${data?.stationName ? "" : "-translate-y-full"}`}>
 
-                    {/* Dispaly start date, start time, and run time */}
+                    {/* DATETIME RUNNER */}
                     <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
-                        display start date, start time, and running time in minutes here
+                        <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
+                            <CardTitle>Session Info</CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-2 flex items-center justify-center gap-3">
+                            <MetricCard
+                                Icon={Calendar}
+                                metric={data.datetimeStart ? new Date(data.datetimeStart).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' }) : "N/A"}
+                                label={"date"}
+                            />
+                            <MetricCard 
+                                Icon={Timer}
+                                metric={<RunTimer startTime={data.datetimeStart} />}
+                                label={"runtime"}
+                            />
+                            <MetricCard
+                                Icon={Clock}
+                                metric={data.datetimeStart ? new Date(data.datetimeStart).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : "N/A"}
+                                label={"time"}
+                            />
+                        </CardContent>
                     </Card>
 
                     {/* FABRICATED QTY */}
@@ -142,7 +176,7 @@ const Station = () => {
                                 title="Stop Duration"
                                 description="Enter stop duration in minutes below."
                             />
-                            <div className="text-center -mt-4">minutes</div>
+                            <div className="text-center -mt-4 text-muted-foreground">minutes</div>
                             <Textarea
                                 className="mt-6 min-h-[6rem] max-h-[6rem]"
                                 placeholder="notes..."
@@ -165,7 +199,7 @@ const Station = () => {
                                 title="Stop Duration"
                                 description="Enter stop duration in minutes below."
                             />
-                            <div className="text-center -mt-4">amount</div>
+                            <div className="text-center -mt-4 text-muted-foreground">amount</div>
                             <Textarea
                                 className="mt-6 min-h-[6rem] max-h-[6rem]"
                                 placeholder="notes..."
@@ -177,10 +211,10 @@ const Station = () => {
 
                     {/* <Button>End Session</Button> */}
                     <AlertWrapper
-                        trigger={<Button className="mt-2">End Session</Button> }
+                        trigger={<Button className="mt-2">End Session</Button>}
                         title="End Session?"
                         description="Your current session will be logged."
-                        action="#" 
+                        action="#"
                         method="POST"
                     />
 
@@ -198,4 +232,5 @@ const Station = () => {
 }
 
 export default Station
+
 

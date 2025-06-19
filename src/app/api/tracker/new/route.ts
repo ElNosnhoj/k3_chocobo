@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 export const POST = async (req: NextRequest)=>{
     const session = await getSessionData()
     session.stationData = defaultStationData
+    session.stationData.datetimeStart = new Date().toISOString()
     await session.save()
     return redirect('/tracker/session')
 }
