@@ -32,7 +32,7 @@ export function LoginForm({
         if (res) router.push('/home')
         else toast.error(`Login failure: username not in the system`)
     }
-    
+
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>

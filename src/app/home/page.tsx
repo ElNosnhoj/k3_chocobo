@@ -12,6 +12,7 @@ import DashboardNavCard from "@/components/ui/dashboard-nav-card";
 
 export default async () => {
     const session = await getSessionData()
+    console.log(session)
     if (!session.isLoggedIn) return redirect('/login')
 
     return (
@@ -21,9 +22,7 @@ export default async () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <DashboardNavCard
                         title="Template"
-                        Icon={Activity}
                         desc="This is some dummy button to nav to different pages. All hail chocogods."
-                        href="#"
                     />
                     <DashboardNavCard
                         title="Session Tracker"

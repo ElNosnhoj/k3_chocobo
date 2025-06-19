@@ -3,22 +3,41 @@
 // station info
 export interface StationData {
     stationName: string
-    changeOverQty: number
-    fabricatedQty: number
-    defectQty: number
     datetimeStart: string
-    notes: string
+    fabricatedQty: number
+    changeOver: boolean
+    changeOverQty: number
+    lineChangeQty: number
+
+    issue: boolean
+    issueDuration: number
+    issueNote: string
+
+    defect: boolean
+    defectQTY: number
+    defectNote: string
 }
 
 // default station tracking data
 export const defaultStationData: StationData = {
     stationName: "",
-    changeOverQty: 0,
+    datetimeStart: "",
     fabricatedQty: 0,
-    defectQty: 0,
-    datetimeStart: new Date().toISOString(),
-    notes: ""
+    
+    changeOver: false,
+    changeOverQty: 0,
+    lineChangeQty: 0,
+
+    issue: false,
+    issueDuration: 0,
+    issueNote: "",
+
+    defect: false,
+    defectQTY: 0,
+    defectNote: ""
 }
+
+
 
 // what to store in session
 export interface SessionData {

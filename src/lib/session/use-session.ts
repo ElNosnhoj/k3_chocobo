@@ -1,39 +1,59 @@
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
-import { redirect } from "next/navigation"
+import { SessionData, StationData } from "./data-interface"
+
+const sessionUrl = '/api/auth/session'
+
 
 const __login = async (url: string, { arg }: { arg: string }) => {
     const formData = new FormData()
     formData.append('username', arg)
     const res = await fetch(url, {
-        method: 'post',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(arg),
     })
 
-    mutate('/api/auth/session')
+    mutate(sessionUrl)
     return res.ok
 }
 
 const __logout = async (url: string) => {
     const res = await fetch(url, { method: 'POST' })
-    mutate('/api/auth/session')
+    mutate(sessionUrl)
     return res.ok
 }
 
-const __session = async (url: string) => {
+const __get_session = async (url: string) => {
     const session = await fetch(url).then(res => res.json())
-    return session
+    return session as SessionData
+}
+
+const __update_station = async (url: string, { arg }: { arg: StationData }) => {
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(arg),
+    })
+    mutate(sessionUrl)
+    try {
+        const msg = await res.json()
+        return msg
+    }
+    catch {
+        return ""
+    }
 }
 
 
 const useSession = () => {
-    const { data: session, error, isLoading } = useSWR('/api/auth/session', __session)
-    const { trigger: login } = useSWRMutation('/api/auth/login', __login, {
-        revalidate: false,
-    })
+    const { data: session, error, isLoading, mutate } = useSWR('/api/auth/session', __get_session)
+    const { trigger: login, isMutating: isLoggingIn } = useSWRMutation('/api/auth/login', __login, { revalidate: false })
     const { trigger: logout, isMutating: isLoggingOut } = useSWRMutation('/api/auth/logout', __logout, {})
-    return { session, error, isLoading, logout, login }
+    const { trigger: updateStation, isMutating: isUpdatingStation } = useSWRMutation('/api/auth/session', __update_station, {})
+    return { session, error, isLoading, mutate, logout, login, updateStation, isLoggingOut, isLoggingIn, isUpdatingStation }
 }
 
 export default useSession

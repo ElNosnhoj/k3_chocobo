@@ -1,0 +1,31 @@
+/**=====================================================================
+ * file: tracker/session/check-card.tsx
+ * desc: checkbox that reveals cardcontent on active
+ *=====================================================================*/
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+
+const CheckCard = ({ title = "checkbox", state = false, onCheckedChange = (b: boolean) => { }, children = <></> }) => (
+    <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
+        <CardHeader className="flex p-4 text-2xl">
+            <div className="flex items-center space-x-2">
+                <Checkbox id={title} className="size-6" checked={state} onCheckedChange={onCheckedChange} />
+                <label
+                    htmlFor={title}
+                    className=" text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                    {title}
+                </label>
+            </div>
+        </CardHeader>
+        <div
+            className={`grid overflow-hidden transition-all duration-300 ease-in-out ${state ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+        >
+            <CardContent className="overflow-hidden border-t-[1px] p-0">
+                {children}
+            </CardContent>
+        </div>
+    </Card>
+)
+export default CheckCard

@@ -17,7 +17,6 @@ const getUserData = async (username: string) => {
         })
         .from(users)
         .where(eq(users.username, username))
-
     console.log(usersFound?.[0])
     return usersFound?.[0]
 }
@@ -40,6 +39,7 @@ export const POST = async (req: NextRequest) => {
     }
     if (!username) return new Response("Username not specified", { status: 400 })
 
+    
     // check database for validitiy
     const userData = await getUserData(username)
     if (!userData) return new Response("Invalid User", { status: 401 })
