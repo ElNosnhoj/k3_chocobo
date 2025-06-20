@@ -7,10 +7,8 @@ import { getSessionData } from "@/lib/session/session";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import DashboardNavCard from "@/components/ui/dashboard-nav-card";
-import { Database } from "lucide-react";
+import { Database, DatabaseZap, Eye } from "lucide-react";
 import AlertWrapper from "@/components/ui/alert-wrapper/server";
-
-
 
 
 export default async () => {
@@ -35,7 +33,7 @@ export default async () => {
                     {session?.stationData &&
                         <DashboardNavCard
                             title="Continue Session"
-                            Icon={Database}
+                            Icon={DatabaseZap}
                             desc="Continue your currently running session"
                             href="/tracker/session"
                         />
@@ -50,9 +48,15 @@ export default async () => {
                         }
                         title="Start New Session?"
                         confirmText="Start Session"
-                        description={`${session?.stationData?'Your current session will be deleted.\n':''}Are you sure you want to start a new session?`}
+                        description={`${session?.stationData ? 'Your current session will be deleted.\n' : ''}Are you sure you want to start a new session?`}
                         action="/api/tracker/new"
                         method="POST"
+                    />
+                    <DashboardNavCard
+                        title="Session History"
+                        Icon={Eye}
+                        desc="View previous work sessions."
+                        href="/tracker/viewer"
                     />
                 </div>
 

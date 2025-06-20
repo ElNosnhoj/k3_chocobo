@@ -6,6 +6,7 @@ export interface StationData {
     datetimeStart: string
     datetimeEnd: string
     fabricatedQty: number
+    
     changeOver: boolean
     changeOverQty: number
     lineChangeQty: number

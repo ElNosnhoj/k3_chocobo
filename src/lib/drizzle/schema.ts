@@ -33,3 +33,4 @@ export const sessionEntries = pgTable('session_entries', {
     defectNotes: text('defect_notes'),
 })
 
+export type SessionEntryProp = typeof sessionEntries.$inferSelect
