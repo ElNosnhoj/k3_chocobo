@@ -19,6 +19,7 @@ import NumberDialog from "./number-dialog";
 import AlertWrapper from "@/components/ui/alert-wrapper/server";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
 import RunTimer from "@/components/ui/run-timer";
+import { RevealWrapper } from "@/components/ui/reveal-wrapper";
 
 const TestingView = ({ data }: { data: StationData | undefined }) => {
     if (!data) return <></>
@@ -64,8 +65,9 @@ const Station = () => {
 
     const updateStationHandler = async (event: BeforeUnloadEvent | undefined = undefined) => {
         if (JSON.stringify(sessionRef.current?.stationData) !== JSON.stringify(dataRef.current)) {
-            const msg = await updateStation(dataRef.current)
-            console.log(msg)
+            // const msg = await updateStation(dataRef.current)
+            // console.log(msg)
+            updateStation(dataRef.current).then(msg => console.log(msg))
         }
     }
 
@@ -89,8 +91,8 @@ const Station = () => {
         <div className="flex flex-col w-full gap-4 overflow-hidden">
             <StationSelector station={data.stationName} onStationChange={s => setData(old => ({ ...old, stationName: s }))} />
 
-            <div className={`overflow-hidden w-full `}>
-                <div className={`flex flex-col gap-3 w-full transition-all duration-700 ease-in-out ${data?.stationName ? "" : "-translate-y-full"}`}>
+            <RevealWrapper state={data?.stationName ? true : false}>
+                <div className="flex flex-col gap-3 w-full">
 
                     {/* DATETIME RUNNER */}
                     <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
@@ -237,7 +239,7 @@ const Station = () => {
                     </div>
 
                 </div>
-            </div>
+            </RevealWrapper>
         </div>
     )
 }
