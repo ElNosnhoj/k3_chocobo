@@ -32,27 +32,3 @@ export const POST = async (req: NextRequest) => {
     }
 }
 
-
-
-
-
-
-
-
-    // return new Response(JSON.stringify({ message: '...' }), { status: 200 })
-
-// try {
-    //     const data = await req.json()
-    //     const session = await getSessionData()
-
-    //     // console.log("============================")
-    //     // console.log(data)
-    //     // console.log(session.stationData)
-    //     session.stationData = data
-    //     await session.save()
-    //     return new Response(JSON.stringify({ message: 'Session data updated' }), { status: 200 })
-    // }
-    // catch (error) {
-    //     console.error('Error updating session data:', error);
-    //     return new Response(JSON.stringify({ message: 'Failed to update session data' }), { status: 500 });
-    // }

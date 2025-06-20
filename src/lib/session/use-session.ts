@@ -53,13 +53,35 @@ const __update_station = async (url: string, { arg }: { arg: StationData }) => {
 
 }
 
+const __insert_station_session_entry = async (url: string, { arg }: { arg?: StationData }) => {
+    const res = await fetch(url, {
+        method: 'POST',
+    })
+    if (!res.ok) {
+        try {
+            const msg = await res.json()
+            console.log(msg)
+        }
+        catch {
+        }
+        return true
+    }
+    else {
+        return false
+    }
+
+}
+
+
+
 
 const useSession = () => {
     const { data: session, error, isLoading, mutate } = useSWR('/api/auth/session', __get_session)
     const { trigger: login, isMutating: isLoggingIn } = useSWRMutation('/api/auth/login', __login, { revalidate: false })
     const { trigger: logout, isMutating: isLoggingOut } = useSWRMutation('/api/auth/logout', __logout, {})
     const { trigger: updateStation, isMutating: isUpdatingStation } = useSWRMutation('/api/auth/session', __update_station, {})
-    return { session, error, isLoading, mutate, logout, login, updateStation, isLoggingOut, isLoggingIn, isUpdatingStation }
+    const { trigger: insertDbSession, isMutating: isInsertingDbSession } = useSWRMutation('/api/tracker/insert', __insert_station_session_entry, {})
+    return { session, error, isLoading, mutate, logout, login, updateStation, isLoggingOut, isLoggingIn, isUpdatingStation, insertDbSession, isInsertingDbSession }
 }
 
 export default useSession

@@ -20,6 +20,7 @@ import AlertWrapper from "@/components/ui/alert-wrapper/client";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
 import RunTimer from "@/components/ui/run-timer";
 import { RevealWrapper } from "@/components/ui/reveal-wrapper";
+import { useRouter } from "next/navigation";
 
 const TestingView = ({ data }: { data: StationData | undefined }) => {
     if (!data) return <></>
@@ -54,9 +55,10 @@ const MetricCard = ({ Icon, metric, label }: { Icon: React.ElementType, metric: 
 const Station = () => {
     // flex flex-col items-center w-full max-w-screen-md py-4 bg-red-100
     const [data, setData] = React.useState<StationData>(defaultStationData)
-    const { session, isLoading, updateStation } = useSession()
+    const { session, isLoading, updateStation, insertDbSession, isUpdatingStation, isInsertingDbSession } = useSession()
     const dataRef = useRef(data);
     const sessionRef = useRef(session);
+    const router = useRouter()
 
     React.useEffect(() => {
         dataRef.current = data;
@@ -87,13 +89,19 @@ const Station = () => {
         setData(old => ({ ...old, stationName: "" }))
     }
 
+    const endSession = async () => {
+        const updatedData = { ...data, datetimeEnd: (new Date().toISOString()) }
+        await updateStation(updatedData)
+        await insertDbSession()
+        router.push("/tracker")
+    }
+
     return (isLoading) ? <ChocoboLoading /> : (
-        <div className="flex flex-col w-full gap-4 overflow-hidden">
+        <div className="flex flex-col w-full gap-4 overflow-hidden relative">
+
             <StationSelector station={data.stationName} onStationChange={s => setData(old => ({ ...old, stationName: s }))} />
-
             <RevealWrapper state={data?.stationName ? true : false}>
-                <div className="flex flex-col gap-3 w-full">
-
+                <div className="flex flex-col gap-3 w-ful">
                     {/* DATETIME RUNNER */}
                     <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
                         <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
@@ -222,12 +230,12 @@ const Station = () => {
                         </div>
                     </CheckCard>
 
-                    {/* <Button>End Session</Button> */}
+                    {/* END SESSION!!!!!!!!! */}
                     <AlertWrapper
                         trigger={<Button className="mt-2">End Session</Button>}
                         title="End Session?"
                         description="Your current session will be logged."
-                        onConfirm={()=>console.log("yoyo")}
+                        onConfirm={endSession}
                     />
 
                     {/* testing stuff */}
@@ -238,7 +246,12 @@ const Station = () => {
                     </div>
 
                 </div>
+                {(isInsertingDbSession) &&
+                    <ChocoboLoading className="fixed inset-0 z-2 bg-white/80 h-screen w-screen" msg="Please Wait..." />
+                }
             </RevealWrapper>
+
+
         </div>
     )
 }

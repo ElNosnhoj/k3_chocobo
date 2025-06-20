@@ -13,7 +13,8 @@ import { redirect } from "next/navigation";
 const getUserData = async (username: string) => {
     const usersFound = await db
         .select({
-            role: users.role
+            id: users.id,
+            role: users.role,
         })
         .from(users)
         .where(eq(users.username, username))
@@ -48,6 +49,7 @@ export const POST = async (req: NextRequest) => {
     const session = await getSessionData()
     session.username = username
     session.role = userData.role
+    session.userId = userData.id
     session.isLoggedIn = true
     await session.save()
 

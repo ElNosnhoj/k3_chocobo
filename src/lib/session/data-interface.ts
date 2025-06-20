@@ -4,6 +4,7 @@
 export interface StationData {
     stationName: string
     datetimeStart: string
+    datetimeEnd: string
     fabricatedQty: number
     changeOver: boolean
     changeOverQty: number
@@ -22,6 +23,7 @@ export interface StationData {
 export const defaultStationData: StationData = {
     stationName: "",
     datetimeStart: "",
+    datetimeEnd: "",
     fabricatedQty: 0,
     
     changeOver: false,
@@ -41,6 +43,7 @@ export const defaultStationData: StationData = {
 
 // what to store in session
 export interface SessionData {
+    userId: string
     username: string
     role: string
     isLoggedIn: boolean
@@ -49,6 +52,7 @@ export interface SessionData {
 
 // default session data
 export const defaultSessionData: SessionData = {
+    userId: '',
     username: '',
     role: 'user',
     isLoggedIn: false,
