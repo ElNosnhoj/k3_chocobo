@@ -37,14 +37,20 @@ const __update_station = async (url: string, { arg }: { arg: StationData }) => {
         },
         body: JSON.stringify(arg),
     })
-    mutate(sessionUrl)
-    try {
-        const msg = await res.json()
-        return msg
+    if (!res.ok) {
+        mutate(sessionUrl)
+        try {
+            const msg = await res.json()
+            console.log(msg)
+        }
+        catch {
+        }
+        return true
     }
-    catch {
-        return ""
+    else {
+        return false
     }
+
 }
 
 
@@ -57,3 +63,4 @@ const useSession = () => {
 }
 
 export default useSession
+

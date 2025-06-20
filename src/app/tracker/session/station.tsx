@@ -16,7 +16,7 @@ import StationSelector from "./station-selector";
 import CheckCard from "./check-card";
 import NumberField, { NumberFieldAlt } from "./number-field";
 import NumberDialog from "./number-dialog";
-import AlertWrapper from "@/components/ui/alert-wrapper/server";
+import AlertWrapper from "@/components/ui/alert-wrapper/client";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
 import RunTimer from "@/components/ui/run-timer";
 import { RevealWrapper } from "@/components/ui/reveal-wrapper";
@@ -227,8 +227,7 @@ const Station = () => {
                         trigger={<Button className="mt-2">End Session</Button>}
                         title="End Session?"
                         description="Your current session will be logged."
-                        action="#"
-                        method="POST"
+                        onConfirm={()=>console.log("yoyo")}
                     />
 
                     {/* testing stuff */}

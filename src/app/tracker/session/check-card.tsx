@@ -4,6 +4,7 @@
  *=====================================================================*/
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
+import RevealWrapper from "@/components/ui/reveal-wrapper"
 
 const CheckCard = ({ title = "checkbox", state = false, onCheckedChange = (b: boolean) => { }, children = <></> }) => (
     <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
@@ -18,14 +19,11 @@ const CheckCard = ({ title = "checkbox", state = false, onCheckedChange = (b: bo
                 </label>
             </div>
         </CardHeader>
-        <div
-            className={`grid overflow-hidden transition-all duration-300 ease-in-out ${state ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                }`}
-        >
+        <RevealWrapper state={state} fade={true} speed={"quick"}>
             <CardContent className="overflow-hidden border-t-[1px] p-0">
                 {children}
             </CardContent>
-        </div>
+        </RevealWrapper>
     </Card>
 )
 export default CheckCard
