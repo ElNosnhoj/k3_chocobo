@@ -19,10 +19,16 @@ const stationOptions = [
     "PEM System"
 ]
 
-const StationSelector = ({ station, onStationChange }: { station: string, onStationChange: (s: string) => void }) => {
+interface StationSelectorProps {
+    station: string,
+    onStationChange: (s:string)=>void
+    className?: string
+}
+
+const StationSelector = ({ station, onStationChange, className}: StationSelectorProps) => {
     return (
-        <Select onValueChange={s => onStationChange(s)} value={station} >
-            <SelectTrigger className="w-[12em] self-center">
+        <Select onValueChange={s => onStationChange(s)} value={station}>
+            <SelectTrigger className={`w-[12em] self-center ${className}`}>
                 <SelectValue placeholder="Select Station" />
             </SelectTrigger>
             <SelectContent >

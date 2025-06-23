@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import useSession from "@/lib/session/use-session";
 import React, { useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import StationSelector from "./station-selector";
+import StationSelector from "../../../components/ui/station-selector";
 import CheckCard from "./check-card";
 import NumberField, { NumberFieldAlt } from "./number-field";
 import NumberDialog from "./number-dialog";
