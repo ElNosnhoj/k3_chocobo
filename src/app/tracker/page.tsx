@@ -38,20 +38,22 @@ export default async () => {
                             href="/tracker/session"
                         />
                     }
-                    <AlertWrapper
-                        trigger={
-                            <DashboardNavCard
-                                title="Start Session"
-                                Icon={Database}
-                                desc="Start a new tracking session."
-                            />
-                        }
-                        title="Start New Session?"
-                        confirmText="Start Session"
-                        description={`${session?.stationData ? 'Your current session will be deleted.\n' : ''}Are you sure you want to start a new session?`}
-                        action="/api/tracker/new"
-                        method="POST"
-                    />
+                    {session.role==="user" &&
+                        <AlertWrapper
+                            trigger={
+                                <DashboardNavCard
+                                    title="Start Session"
+                                    Icon={Database}
+                                    desc="Start a new tracking session."
+                                />
+                            }
+                            title="Start New Session?"
+                            confirmText="Start Session"
+                            description={`${session?.stationData ? 'Your current session will be deleted.\n' : ''}Are you sure you want to start a new session?`}
+                            action="/api/tracker/new"
+                            method="POST"
+                        />
+                    }
                     <DashboardNavCard
                         title="Session History"
                         Icon={Eye}

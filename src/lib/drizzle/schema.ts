@@ -6,7 +6,7 @@ import { pgTable, serial, text, integer, timestamp, smallint, uuid } from 'drizz
 import { relations, sql } from 'drizzle-orm';
 
 export const users = pgTable('users', {
-    id: uuid('id').primaryKey().default(sql`gen_random_uuid()`), 
+    id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
     username: text('username').notNull().unique(),
     role: text('role').default('user').notNull(),
     createdAt: timestamp('created_at').defaultNow()
@@ -33,4 +33,7 @@ export const sessionEntries = pgTable('session_entries', {
     defectNotes: text('defect_notes'),
 })
 
-export type SessionEntryProp = typeof sessionEntries.$inferSelect
+export type SessionEntryProp =
+    typeof sessionEntries.$inferSelect & {
+        username?: string | null
+    }

@@ -52,7 +52,7 @@ export function LoginForm({
                                     <Input
                                         id="username"
                                         name="username"
-                                        type="text"
+                                        type="password"
                                         placeholder="john.doe"
                                         required
                                     />

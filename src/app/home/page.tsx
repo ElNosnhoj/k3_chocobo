@@ -19,20 +19,28 @@ export default async () => {
             <Header />
             <main className="flex-1 p-6 mx-auto w-full max-w-screen-md">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <DashboardNavCard
-                        title="Template"
-                        desc="This is some dummy button to nav to different pages. All hail chocogods."
-                    />
+                    {false &&
+                        <DashboardNavCard
+                            title="Template"
+                            desc="This is some dummy button to nav to different pages. All hail chocogods."
+                        />
+                    }
                     <DashboardNavCard
                         title="Session Tracker"
                         Icon={Activity} // Replace with appropriate icon if needed
                         desc="Track data for your machines, including fabricated parts, defects, and issues."
                         href="/tracker"
                     />
+                    {session.role === "admin" &&
+                        <DashboardNavCard
+                            title="Admin Card!"
+                            desc="You'll see this if you're an admin. All hail chocogods."
+                        />
+                    }
                 </div>
             </main>
 
-            <Footer name={session.username}/>
+            <Footer name={session.username} />
         </div>
     )
 }
