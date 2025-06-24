@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { getSessionData } from "@/lib/session/session";
+import { getAuthSessionData } from "@/lib/session/auth-session";
 
 export default async () => {
-    const session = await getSessionData()
+    const session = await getAuthSessionData()
     if (!session.isLoggedIn) return redirect('/login')
     return redirect('/home')
 }

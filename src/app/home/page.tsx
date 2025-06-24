@@ -3,7 +3,7 @@
  * desc: dashboard user sees on login
  *=====================================================================*/
 import { redirect } from "next/navigation";
-import { getSessionData } from "@/lib/session/session";
+import { getAuthSessionData } from "@/lib/session/auth-session";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { Activity, Sparkle } from "lucide-react";
@@ -11,7 +11,7 @@ import DashboardNavCard from "@/components/ui/dashboard-nav-card";
 
 
 export default async () => {
-    const session = await getSessionData()
+    const session = await getAuthSessionData()
     if (!session.isLoggedIn) return redirect('/login')
 
     return (

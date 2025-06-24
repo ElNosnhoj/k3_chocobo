@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import React from "react"
 
-import useSession from "@/lib/session/use-session"
+import { useLogin } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
@@ -22,7 +22,7 @@ export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
-    const { login, isLoggingIn } = useSession()
+    const { login, isLoginLoading } = useLogin()
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +44,7 @@ export function LoginForm({
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubmit} method="POST" autoComplete="off">
+                    <form onSubmit={handleSubmit} method="POST" autoComplete="off" >
                         <div className="grid gap-6">
                             <div className="grid gap-6">
                                 <div className="grid gap-3">
@@ -54,6 +54,7 @@ export function LoginForm({
                                         name="username"
                                         type="password"
                                         placeholder="john.doe"
+                                        autoComplete="off"
                                         required
                                     />
                                 </div>
@@ -70,16 +71,12 @@ export function LoginForm({
                 </CardContent>
             </Card>
 
-            {isLoggingIn &&
-                <>
-                    <Card className="z-1 absolute inset-0 w-full h-full bg-white/80">
-                    </Card>
-                    <Card className="z-1 absolute inset-0 w-full h-full bg-transparent flex items-center justify-center">
-                        <ChocoboLoading className="w-30" />
-                    </Card>
-                </>
-
+            {isLoginLoading &&
+                <Card className="absolute inset-0 w-full h-full bg-transparent flex items-center justify-center bg-white/66">
+                    <ChocoboLoading size="sm" msg="Checking..." className="" />
+                </Card>
             }
+
 
         </div>
     )

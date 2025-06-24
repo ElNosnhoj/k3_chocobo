@@ -3,11 +3,13 @@
  * desc: logout!
  *=====================================================================*/
 import { NextRequest } from "next/server"
-import { getSessionData } from "@/lib/session/session";
+import { getAuthSessionData } from "@/lib/session/auth-session";
 import { db } from "@/lib/drizzle/db";
 import { users } from "@/lib/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
+import { getStationSessionData } from "@/lib/session/station-session";
+import { defaultAuthSessionData } from "@/types/auth-types";
 
 
 const getUserData = async (username: string) => {
@@ -25,12 +27,6 @@ const getUserData = async (username: string) => {
 
 // attempt login
 export const POST = async (req: NextRequest) => {
-    // get username
-    // const formData = await req.formData()
-    // const username = formData.get('username') as string
-    // if (!username) return new Response("Username not specified", { status: 400 })
-
-    // get username. try from body and form
     let username;
     try {
         username = await req.json()
@@ -39,14 +35,13 @@ export const POST = async (req: NextRequest) => {
         username = (await req.formData()).get('username') as string
     }
     if (!username) return new Response("Username not specified", { status: 400 })
-
     
     // check database for validitiy
     const userData = await getUserData(username)
     if (!userData) return new Response("Invalid User", { status: 401 })
 
     // looks good so store session data and save
-    const session = await getSessionData()
+    const session = await getAuthSessionData()
     session.username = username
     session.role = userData.role
     session.userId = userData.id
@@ -55,4 +50,30 @@ export const POST = async (req: NextRequest) => {
 
     return redirect("/home")
 }
+
+
+
+// logout
+export const DELETE = async (req: NextRequest) => {
+    console.log("logger outerrooo")
+    const session = await getAuthSessionData()
+    const station = await getStationSessionData()
+    
+    session.destroy()
+    await session.save()
+    station.destroy()
+    await station.destroy()
+    return redirect('/login')
+}
+
+
+
+
+// retrieve session data
+export const GET = async (req: NextRequest) => {
+    const session = await getAuthSessionData()
+    if (!session.isLoggedIn) return Response.json(defaultAuthSessionData)
+    return Response.json(session)
+}
+
 

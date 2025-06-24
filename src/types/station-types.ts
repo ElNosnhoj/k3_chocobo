@@ -1,7 +1,6 @@
 
-
 // station info
-export interface StationData {
+export interface StationSessionData {
     stationName: string
     datetimeStart: string
     datetimeEnd: string
@@ -21,7 +20,7 @@ export interface StationData {
 }
 
 // default station tracking data
-export const defaultStationData: StationData = {
+export const defaultStationSessionData: StationSessionData = {
     stationName: "",
     datetimeStart: "",
     datetimeEnd: "",
@@ -39,25 +38,3 @@ export const defaultStationData: StationData = {
     defectQTY: 0,
     defectNote: ""
 }
-
-
-
-// what to store in session
-export interface SessionData {
-    userId: string
-    username: string
-    role: string
-    isLoggedIn: boolean
-    stationData?: StationData
-}
-
-// default session data
-export const defaultSessionData: SessionData = {
-    userId: '',
-    username: '',
-    role: 'user',
-    isLoggedIn: false,
-    stationData: defaultStationData
-}
-
-

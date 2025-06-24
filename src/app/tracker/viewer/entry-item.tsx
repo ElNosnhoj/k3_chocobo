@@ -25,7 +25,7 @@ const EntryItem = ({ entry, onEdit = (entry) => { } }: { entry: SessionEntryProp
             trigger={
                 <div className="px-2">
                     <div className="text-2xl">{entry.stationName}</div>
-                    <div className="text-xs font-normal">{entry.datetimeStart.toLocaleString()}</div>
+                    <div className="text-xs font-normal">{new Date(entry.datetimeStart).toLocaleString()}</div>
                     {entry.username&&<p className="text-xs font-normal">{entry.username}</p>}
                 </div>
             }

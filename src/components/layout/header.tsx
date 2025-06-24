@@ -7,7 +7,7 @@ import LogoutButton from "@/components/features/auth/logout-button"
 
 export default () => {
     return (
-        <header className="bg-white shadow p-6">
+        <header className="bg-background shadow p-6">
             <div className="mx-auto w-full max-w-screen-md flex justify-between items-center">
                 <a href="/home" className="flex items-center gap-2">
                     <EggFried />

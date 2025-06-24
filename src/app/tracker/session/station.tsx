@@ -3,13 +3,16 @@
  * file: tracker/session/tracker.tsx
  * desc: view data for station
  *=====================================================================*/
+// hooks
+import { useStationSession } from "@/hooks/use-station";
+import { useStationDB } from "@/hooks/use-station-db";
+import { useRouter } from "next/navigation";
+
+// components
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import { defaultStationData, StationData, SessionData } from "@/lib/session/data-interface";
-
-import { Calendar, Clock, Timer, ThumbsDown, OctagonMinus, Brush, Rocket } from "lucide-react";
+import { defaultStationSessionData, StationSessionData } from "@/types/station-types";
+import { Calendar, Clock, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import useSession from "@/lib/session/use-session";
 import React, { useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import StationSelector from "../../../components/ui/station-selector";
@@ -20,9 +23,9 @@ import AlertWrapper from "@/components/ui/alert-wrapper/client";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
 import RunTimer from "@/components/ui/run-timer";
 import { RevealWrapper } from "@/components/ui/reveal-wrapper";
-import { useRouter } from "next/navigation";
 
-const TestingView = ({ data }: { data: StationData | undefined }) => {
+
+const TestingView = ({ data }: { data: StationSessionData | undefined }) => {
     if (!data) return <></>
     return (
         <div className="w-full break-words">
@@ -53,57 +56,49 @@ const MetricCard = ({ Icon, metric, label }: { Icon: React.ElementType, metric: 
 
 
 const Station = () => {
-    // flex flex-col items-center w-full max-w-screen-md py-4 bg-red-100
-    const [data, setData] = React.useState<StationData>(defaultStationData)
-    const { session, isLoading, updateStation, insertDbSession, isUpdatingStation, isInsertingDbSession } = useSession()
-    const dataRef = useRef(data);
-    const sessionRef = useRef(session);
+    const { stationSession, isStationLoading, isStationUpdating, updateStation } = useStationSession()
+    const { insertSessionDb, isInsertSessionDbLoading } = useStationDB()
+    const [data, setData] = React.useState(defaultStationSessionData)
+    const dataRef = React.useRef(data)
+    const sessionRef = useRef(stationSession)
     const router = useRouter()
 
-    React.useEffect(() => {
-        dataRef.current = data;
-        sessionRef.current = session;
-    }, [data, session]);
-
-    const updateStationHandler = async (event: BeforeUnloadEvent | undefined = undefined) => {
-        if (JSON.stringify(sessionRef.current?.stationData) !== JSON.stringify(dataRef.current)) {
-            // const msg = await updateStation(dataRef.current)
-            // console.log(msg)
-            updateStation(dataRef.current).then(msg => console.log(msg))
-        }
-    }
+    React.useEffect(() => { dataRef.current = data }, [data])
+    React.useEffect(() => { sessionRef.current = stationSession }, [stationSession])
 
     React.useEffect(() => {
-        if (isLoading) return
-        session?.stationData && setData(session.stationData)
+        if (isStationLoading) return
+        stationSession && setData(stationSession)
         const intervalID = setInterval(updateStationHandler, 30000)
         window.addEventListener('beforeunload', updateStationHandler)
         return () => {
             clearInterval(intervalID)
             window.removeEventListener('beforeunload', updateStationHandler)
         }
-    }, [isLoading])
+    }, [isStationLoading])
 
 
-    const test = async () => {
-        setData(old => ({ ...old, stationName: "" }))
+    const updateStationHandler = async (event: BeforeUnloadEvent | undefined = undefined) => {
+        if (JSON.stringify(sessionRef.current) !== JSON.stringify(dataRef.current)) {
+            updateStation(dataRef.current)
+        }
     }
-
     const endSession = async () => {
         const updatedData = { ...data, datetimeEnd: (new Date().toISOString()) }
         await updateStation(updatedData)
-        await insertDbSession()
-        router.push("/tracker")
+        const res = await insertSessionDb()
+        if (res) router.push("/tracker")
     }
 
-    return (isLoading) ? <ChocoboLoading /> : (
-        <div className="flex flex-col w-full gap-4 overflow-hidden relative">
 
+    return (isStationLoading) ? <ChocoboLoading /> : (
+        <div className="flex flex-col w-full gap-4 overflow-hidden ">
+            {isInsertSessionDbLoading&& <ChocoboLoading variant='fullscreen'/>}
             <StationSelector station={data.stationName} onStationChange={s => setData(old => ({ ...old, stationName: s }))} />
             <RevealWrapper state={data?.stationName ? true : false}>
-                <div className="flex flex-col gap-3 w-ful">
-                    {/* DATETIME RUNNER */}
-                    <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0">
+                <div className="flex flex-col gap-3 w-full">
+                    {/* DATETIME RUNNER and fabricator*/}
+                    <Card className="w-full shadow-sm gap-0 m-0 p-0">
                         <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
                             <CardTitle>Session Info</CardTitle>
                         </CardHeader>
@@ -134,21 +129,6 @@ const Station = () => {
                                 />
                                 <h1 className="text-xl -mt-4">fabricated</h1>
                             </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* FABRICATED QTY */}
-                    <Card className="w-full shadow-sm border-0 gap-0 m-0 p-0 pb-4 hidden">
-                        <CardHeader className="flex item-center justify-center p-4 border-b-[1px] text-2xl">
-                            <CardTitle>Fabricated QTY</CardTitle>
-                        </CardHeader>
-                        <CardContent className=" flex items-center justify-center">
-                            <NumberField
-                                value={data.fabricatedQty}
-                                onValueChange={v => setData(old => ({ ...old, fabricatedQty: v }))}
-                                title="Edit Fabricated Quantity"
-                                description="Enter the new fabricated quantity below."
-                            />
                         </CardContent>
                     </Card>
 
@@ -237,21 +217,8 @@ const Station = () => {
                         description="Your current session will be logged."
                         onConfirm={endSession}
                     />
-
-                    {/* testing stuff */}
-                    <div className="flex flex-col w-full gap-4 hidden">
-                        <Button onClick={test}>ignore</Button>
-                        <TestingView data={data} />
-                        <TestingView data={session?.stationData} />
-                    </div>
-
                 </div>
-                {(isInsertingDbSession) &&
-                    <ChocoboLoading className="fixed inset-0 z-2 bg-white/80 h-screen w-screen" msg="Please Wait..." />
-                }
             </RevealWrapper>
-
-
         </div>
     )
 }
