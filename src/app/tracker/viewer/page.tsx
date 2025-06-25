@@ -9,7 +9,7 @@ import { useAuthSession } from "@/hooks/use-auth";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
 import { useStationDB } from "@/hooks/use-station-db";
 import EntriesOverview from "./entries-overview";
-import PageWrapper from "@/components/ui/page-wrapper";
+import PageWrapper from "@/components/ui/page-wrapper/client";
 
 export default () => {
     const { authSession, isAuthLoading } = useAuthSession()

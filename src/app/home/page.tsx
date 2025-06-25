@@ -2,18 +2,13 @@
  * file: home/page.tsx
  * desc: dashboard user sees on login
  *=====================================================================*/
-import { redirect } from "next/navigation";
 import { getAuthSessionData } from "@/lib/session/auth-session";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
 import { Activity, Sparkle } from "lucide-react";
 import DashboardNavCard from "@/components/ui/dashboard-nav-card";
-import PageWrapper from "@/components/ui/page-wrapper";
+import PageWrapper from "@/components/ui/page-wrapper/server";
 
 export default async () => {
-    const session = await getAuthSessionData()
-    if (!session.isLoggedIn) return redirect('/login')
-
+    const authSession = await getAuthSessionData()
     return (
         <PageWrapper>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-rows-fr" >
@@ -23,7 +18,7 @@ export default async () => {
                         desc="This is some dummy button to nav to different pages. All hail chocogods."
                     />
                 }
-                {session.role === "admin" &&
+                {authSession.role === "admin" &&
                     <DashboardNavCard
                         title="Admin Card!"
                         desc="You'll see this if you're an admin. All hail chocogods."
@@ -35,7 +30,7 @@ export default async () => {
                     desc="Track data for your machines, including fabricated parts, defects, and issues."
                     href="/tracker"
                 />
-                {session.role === "admin" &&
+                {authSession.role === "admin" &&
                     <DashboardNavCard
                         title="OEESS"
                         Icon={Sparkle}

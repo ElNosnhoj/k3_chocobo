@@ -10,7 +10,7 @@ import DashboardNavCard from "@/components/ui/dashboard-nav-card";
 import AlertWrapper from "@/components/ui/alert-wrapper/client";
 import { Database, DatabaseZap, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
-import PageWrapper from "@/components/ui/page-wrapper";
+import PageWrapper from "@/components/ui/page-wrapper/client";
 import React from "react";
 
 export default () => {
