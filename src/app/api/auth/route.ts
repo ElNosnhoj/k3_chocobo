@@ -20,7 +20,6 @@ const getUserData = async (username: string) => {
         })
         .from(users)
         .where(eq(users.username, username))
-    console.log(usersFound?.[0])
     return usersFound?.[0]
 }
 

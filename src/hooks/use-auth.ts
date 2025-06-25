@@ -2,8 +2,9 @@
 import { AuthSessionData } from "@/types/auth-types"
 import useSWR, { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
-const sessionUrl = '/api/auth/session'
 const authUrl = '/api/auth'
 
 const __login = async (url: string, { arg }: { arg: string }) => {
@@ -19,7 +20,7 @@ const __login = async (url: string, { arg }: { arg: string }) => {
 }
 
 const __logout = async (url: string) => {
-    const res = await fetch(url, { method: 'POST' })
+    const res = await fetch(url, { method: 'DELETE' })
     return res.ok
 }
 
@@ -44,6 +45,7 @@ export const useAuthSession = () => {
 }
 
 export const useLogin = () => {
+    const router = useRouter()
     const {
         trigger: login,
         data: loginResult,
@@ -51,20 +53,30 @@ export const useLogin = () => {
         isMutating: isLoginLoading
     } = useSWRMutation(authUrl, __login, {
         revalidate: false,
-        onSuccess: () => mutate(authUrl)
+        onSuccess: (data) => {
+            if (data) router.push('/home')
+            else toast.error(`Login failure: username not in the system`)
+            mutate(authUrl)
+
+        }
     })
 
     return { login, loginResult, loginError, isLoginLoading }
 }
 
 export const useLogout = () => {
+    const router = useRouter()
     const {
         trigger: logout,
         data: logoutResult,
         error: logoutError,
         isMutating: isLogoutLoading
     } = useSWRMutation(authUrl, __logout, {
-        onSuccess: () => mutate(authUrl)
+        onSuccess: (data) => {
+            if (data) router.push('/login')
+            else toast.error(`Logout failure: couldn't logout?`)
+            mutate(authUrl)
+        }
     })
 
     return { logout, logoutResult, logoutError, isLogoutLoading }

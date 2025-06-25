@@ -36,7 +36,7 @@ const AlertWrapper = ({
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>
-                    <AlertDialogDescription>
+                    <AlertDialogDescription className="whitespace-pre-line">
                         {description}
                     </AlertDialogDescription>
                 </AlertDialogHeader>

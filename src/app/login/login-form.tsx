@@ -13,25 +13,24 @@ import { Label } from "@/components/ui/label"
 import React from "react"
 
 import { useLogin } from "@/hooks/use-auth";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import ChocoboLoading from "@/components/ui/chocobo-loading";
 
-
+ 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
     const { login, isLoginLoading } = useLogin()
-    const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const username = formData.get("username") as string;
-        const res = await login(username)
-        if (res) router.push('/home')
-        else toast.error(`Login failure: username not in the system`)
+
+        try {
+            const res = await login(username)
+        } catch (err) {
+        }
     }
 
     return (
@@ -71,7 +70,7 @@ export function LoginForm({
                 </CardContent>
             </Card>
 
-            {isLoginLoading &&
+            {(isLoginLoading) &&
                 <Card className="absolute inset-0 w-full h-full bg-transparent flex items-center justify-center bg-white/66">
                     <ChocoboLoading size="sm" msg="Checking..." className="" />
                 </Card>

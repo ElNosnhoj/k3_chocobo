@@ -1,4 +1,6 @@
+'use client'
 import { Button } from "@/components/ui/button"
+import AlertWrapper from "@/components/ui/alert-wrapper/client"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -10,6 +12,9 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useLogout } from "@/hooks/use-auth"
+import ChocoboLoading from "@/components/ui/chocobo-loading"
+import { toast } from "sonner"
 
 const LogOutIcon = ({ ...props }) => {
     return (
@@ -33,30 +38,20 @@ const LogOutIcon = ({ ...props }) => {
 }
 
 export default () => {
-    return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
+    const { logout, isLogoutLoading } = useLogout()
+    return (isLogoutLoading) ? <ChocoboLoading variant={"fullscreen"} /> : (
+        <AlertWrapper
+            title="Are you sure?"
+            description="This action will log you out of your account and clear any current session tracking."
+            cancelText="Cancel"
+            confirmText="Logout"
+            onConfirm={logout}
+            trigger={
                 <Button variant="outline" className="inline-flex items-center">
                     <LogOutIcon className="h-4 w-4" />
                     <span className="hidden md:inline">Logout</span>
                 </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        This action will log you out of your account and clear any current session tracking.
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
-                <form action="/api/auth/logout" method="POST">
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction type="submit">
-                            Logout
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </form>
-            </AlertDialogContent>
-        </AlertDialog>
+            }
+        />
     )
 }

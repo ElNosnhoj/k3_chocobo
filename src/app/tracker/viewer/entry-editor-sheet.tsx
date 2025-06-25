@@ -70,6 +70,7 @@ const EntryEditorSheet = ({ open, entry, onEditSave, onEditExit }: EntryEdiotrSh
                         <Label htmlFor="fabricated">Defect Notes</Label>
                         <Textarea
                             className="min-h-[6rem] max-h-[6rem]"
+                            maxLength={255}
                             placeholder="notes..."
                             value={sheetEntry.defectNotes || ''}
                             onChange={(e) => updateSheetEntry("defectNotes", e.target.value)}
@@ -96,6 +97,7 @@ const EntryEditorSheet = ({ open, entry, onEditSave, onEditExit }: EntryEdiotrSh
                         <Label htmlFor="fabricated">Issue/Stop Notes</Label>
                         <Textarea
                             className="min-h-[6rem] max-h-[6rem]"
+                            maxLength={255}
                             placeholder="notes..."
                             value={sheetEntry.issueNotes || ''}
                             onChange={(e) => updateSheetEntry("issueNotes", e.target.value)}
