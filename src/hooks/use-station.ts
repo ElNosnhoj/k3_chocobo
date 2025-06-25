@@ -7,7 +7,7 @@ const stationURL = '/api/station'
 const getSession = async (url: string) => {
     // const stationData = await fetch(url).then(res=>res.json()).then(res=>res.session)
     const res = await fetch(url)
-    if (res.ok){
+    if (res.ok) {
         const stationData = await res.json()
         return stationData as StationSessionData
     }
@@ -46,7 +46,7 @@ const deleteSession = async (url: string) => {
 }
 
 export const useStationSession = () => {
-    const { data: stationSession, error: stationError, isLoading:isStationLoading, mutate: mutateStation } = useSWR(stationURL, getSession)
+    const { data: stationSession, error: stationError, isLoading: isStationLoading, mutate: mutateStation, isValidating: isStationValidating } = useSWR(stationURL, getSession)
 
     const { trigger: resetStation, isMutating: isStationResetting } = useSWRMutation(stationURL, postSession, {
         onSuccess: () => mutateStation(),
@@ -68,6 +68,7 @@ export const useStationSession = () => {
         stationSession,
         stationError,
         isStationLoading,
+        isStationValidating,
         mutateStation,
         resetStation,
         isStationResetting,
