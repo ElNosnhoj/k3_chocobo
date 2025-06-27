@@ -35,6 +35,7 @@ export default async () => {
                         title="OEESS"
                         Icon={Sparkle}
                         desc="View station operational effeciency at a glance."
+                        href="/oeess"
                     />
                 }
             </div>

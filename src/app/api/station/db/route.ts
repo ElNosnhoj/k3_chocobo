@@ -3,7 +3,7 @@ import { getStationSessionData } from "@/lib/session/station-session";
 import { getAuthSessionData } from "@/lib/session/auth-session";
 import { defaultStationSessionData, StationSessionData } from "@/types/station-types";
 import { db } from "@/lib/drizzle/db";
-import { eq, and, gt, desc } from "drizzle-orm"; // Import desc
+import { eq, and, gt, desc } from "drizzle-orm";
 import { sessionEntries, SessionEntryProp, users } from "@/lib/drizzle/schema";
 
 export const POST = async (req: NextRequest) => {

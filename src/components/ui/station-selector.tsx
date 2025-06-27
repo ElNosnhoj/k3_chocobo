@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select"
 
 
-const stationOptions = [
+export const stationOptions = [
     "Laser Cutting",
     "Press Brake",
     "PEM System"

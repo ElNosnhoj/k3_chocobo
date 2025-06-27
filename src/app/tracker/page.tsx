@@ -16,17 +16,15 @@ import React from "react";
 export default () => {
     const { authSession, isAuthLoading } = useAuthSession()
     const { stationSession, isStationLoading, resetStation, isStationResetting, isStationValidating } = useStationSession()
-    const [loading, setLoading] = React.useState(false)
     const router = useRouter()
     const handleStart = async () => {
-        setLoading(true)
         await resetStation()
         router.push('/tracker/session')
     }
 
     return (
         <PageWrapper>
-            {(isAuthLoading || isStationLoading || isStationResetting || loading) ? <ChocoboLoading /> :
+            {(isAuthLoading || isStationLoading || isStationResetting ) ? <ChocoboLoading /> :
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {stationSession?.stationName &&
                         <DashboardNavCard
