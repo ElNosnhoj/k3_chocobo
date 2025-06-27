@@ -11,8 +11,6 @@ const PageWrapper = async ({ children }: Readonly<{
     children?: React.ReactNode;
 }>) => {
     const authSession = await getAuthSessionData()
-    if (!authSession.isLoggedIn) redirect('/login')
-
     return (
         <div className="flex flex-col min-h-screen bg-background bg-gray-100">
             <Header />

@@ -15,12 +15,6 @@ const PageWrapper = ({ children }: Readonly<{
     children?: React.ReactNode;
 }>) => {
     const { authSession, isAuthLoading} = useAuthSession()
-    const router = useRouter()
-    React.useEffect(() => {
-        if (!isAuthLoading && authSession) {
-            if (!authSession.isLoggedIn) router.replace('/login')
-        }
-    }, [authSession, isAuthLoading])
     return (
         <div className="flex flex-col min-h-screen bg-background bg-gray-100">
             <Header />
