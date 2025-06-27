@@ -42,7 +42,7 @@ interface ChocoboLoadingProps extends VariantProps<typeof chocoboVariants> {
 const ChocoboLoading = ({ className, msg="Loading...", variant, size }: ChocoboLoadingProps) => {
     return (
         <div className={cn(chocoboVariants({ variant, size, className }))}>
-            <img src="/chocobo-loading.gif" alt="Loading..."/>
+            <img src="/chocobo-loading.gif" alt=""/>
             {msg&&<p className="text-inherit">{msg}</p>}
         </div>
     )

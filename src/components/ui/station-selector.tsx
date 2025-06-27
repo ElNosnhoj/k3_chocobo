@@ -11,6 +11,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import React from "react"
 
 
 export const stationOptions = [
@@ -20,14 +21,19 @@ export const stationOptions = [
 ]
 
 interface StationSelectorProps {
-    station: string,
-    onStationChange: (s:string)=>void
+    station?: string,
+    onStationChange?: (s:string)=>void
     className?: string
 }
 
 const StationSelector = ({ station, onStationChange, className}: StationSelectorProps) => {
+    const [val, setVal] = React.useState<undefined|string>(undefined)
+    const handleValueChange = (s:string)=>{
+        setVal(s)
+        onStationChange&&onStationChange(s)
+    }
     return (
-        <Select onValueChange={s => onStationChange(s)} value={station}>
+        <Select onValueChange={handleValueChange} value={val!=undefined?val:''}>
             <SelectTrigger className={`w-[12em] self-center ${className}`}>
                 <SelectValue placeholder="Select Station" />
             </SelectTrigger>
